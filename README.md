@@ -32,7 +32,7 @@ sudo apt install python3
 ```
 Install Python dependencies
 ```bash
-pip install cloudscraper beautifulsoup4
+pip install requests cloudscraper beautifulsoup4
 ```
 This tool is written in C++ and requires a compiler.
 ```bash
