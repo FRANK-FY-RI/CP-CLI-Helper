@@ -2,6 +2,8 @@ import cloudscraper
 from bs4 import BeautifulSoup as bs
 import sys
 import re
+import time
+from requests.exceptions import ReadTimeout, RequestException
 
 if len(sys.argv) != 2:
     print("Usage: python3 cf_parse.py <PROBLEM_ID>")
@@ -26,8 +28,24 @@ print("URL:", url)
 scraper = cloudscraper.create_scraper()
 
 print("Downloading....")
-resp = scraper.get(url, timeout=10)
-resp.raise_for_status() #crash if download failed
+def fetch_with_retry(url, retries=3, timeout=20):
+    for attempt in range(1, retries + 1):
+        try:
+            print(f"🌐 Fetch attempt {attempt}...")
+            resp = scraper.get(url, timeout=timeout)
+            resp.raise_for_status()
+            return resp
+        except ReadTimeout:
+            print("⏳ Timeout. Retrying...")
+        except RequestException as e:
+            print("❌ Network error:", e)
+            time.sleep(2)
+
+    print("⚠️ Codeforces blocked automated access (likely contest protection).")
+    print("👉 Try again after contest ends or open problem once in browser.")
+    sys.exit(1)
+
+resp = fetch_with_retry(url)
 
 html = resp.text
 soup = bs(html, "html.parser")

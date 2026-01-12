@@ -9,8 +9,7 @@ int main(int argc, char* argv[]) {
     if(argc == 1 || (string)argv[1] == "--help") {
         cout << "cf — Codeforces CLI helper\n\n";
         cout << "Usage:\n";
-        cout << "  cf <problem_id>\n";
-        cout << "  cf test <solution.cpp> <input> <answer>\n\n";
+        cout << "  cf <option> <problem_id>\n";
         cout << "Examples:\n";
         cout << "  cf 1803A\n";
         return 0;
@@ -47,7 +46,7 @@ int main(int argc, char* argv[]) {
     //fetch command
     if(cmd == "fetch") {
         string create_solcpp = "touch " + prob + ".cpp";
-        string parsecmd = "python3 cf_parse.py " + contestid + probno;
+        string parsecmd = "python3 /opt/CPJudge/cf_parse.py " + contestid + probno;
         cout<<parsecmd<<"\n";
         int parsecode = system(parsecmd.c_str());
         if(parsecode) {
@@ -92,7 +91,7 @@ int main(int argc, char* argv[]) {
                 cerr<<ac<<"/"<<i-1<<" Passed\n";
                 return 0;
             }
-            string testcmd = "./run.sh " + prob + ".cpp " + input + " " + output;            
+            string testcmd = "/opt/CPJudge/run.sh " + prob + ".cpp " + input + " " + output;            
             int testcode = system(testcmd.c_str());
             if(testcode == 1) {
                 cerr<<"Error while testing\n";
