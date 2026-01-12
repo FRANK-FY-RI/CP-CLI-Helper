@@ -9,44 +9,35 @@ int main(int argc, char* argv[]) {
     if(argc == 1 || (string)argv[1] == "--help") {
         cout << "CPH — Competitive Programming CLI helper\n\n";
         cout << "Usage:\n";
-        cout << "  cf <option> <problem_id>\n";
+        cout << "  atc <option> <problem_id>\n";
         cout << "Examples:\n";
-        cout << "  cf 1803A\n";
+        cout << "  atc abc213_a\n";
         return 0;
     }
 
     //Invalid number of arguments
     if(argc != 3) {
         cout<<"Usage Option:\n";
-        cout<<"cf fetch <problem>\n";
-        cout<<"cf test <problem>\n";
-        cout<<"cf run <problem>\n";
-        cout<<"Example: cf fetch 2183A\n";
+        cout<<"atc fetch <problem>\n";
+        cout<<"atc test <problem>\n";
+        cout<<"atc run <problem>\n";
+        cout<<"Example: atc fetch abc202_b\n";
         return 0;
     }
 
     string cmd = argv[1];
     string prob = argv[2];
-    if(prob.size() < 2 || !isdigit(prob[0])) {
+    if(prob.size() != 8) {
         cerr<<"⚠️  Invalid problem ID\n";
         return 1;
     }
 
-    string contestid = "";
-    string probno = "";
-    int i = 0;
-    bool isd = true;
-    while(argv[2][i] != '\0') {
-        if(!isdigit(argv[2][i])) isd = false;
-        if(isd) contestid += argv[2][i];
-        else probno += argv[2][i];
-        i++;
-    }
+    string contestid = prob.substr(0, 6);
 
     //fetch command
     if(cmd == "fetch") {
         string create_solcpp = "touch " + prob + ".cpp";
-        string parsecmd = "python3 /opt/CPH/cf_parse.py " + contestid + probno;
+        string parsecmd = "python3 /opt/CPH/atc_parse.py " + prob;
         int parsecode = system(parsecmd.c_str());
         if(parsecode) {
             cerr<<"Fetch Failed\n";
@@ -103,7 +94,8 @@ int main(int argc, char* argv[]) {
 
     //No commands matched
     else {
-        cerr<<"Commands available are fetch\nrun\ntest\n";
+        cout<<"Commands available are fetch\nrun\ntest\n";
     }
     return 0;
 }
+
