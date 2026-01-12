@@ -3,19 +3,24 @@
 
 Fast CLI tool to compile, run and locally judge Codeforces solutions with sample test case parsing.
 
-Supported OS: Linux (tested on Ubuntu).
+- Supported OS: Linux (tested on Ubuntu).
+- Supported Platforms:
+    - Codeforces
+    - AtCoder
+
+- Built and tested using GCC (g++-14)
 ## Features
 
-- Downloads Input/Output from Codeforces
+- Downloads Input/Output from the platform
 - Normalizes output (removes extra whitespace characters)
 - Run on custom input (stdin)
 - Works on C++ 23
 - Returns exit codes: 
     - 0 = Accepted
     - 1 = Error
-    - 2 = Wrong Anser
+    - 2 = Wrong Answe
 - Supports multiple test cases without early termination
-- GCC optimized (-O2)
+- GCC optimized (-O2 / -O3)
 - Simple Global CLI installation
 
 
@@ -23,7 +28,7 @@ Supported OS: Linux (tested on Ubuntu).
 
 Install CP-Helper with the following steps:
 - Step 1
-First, all the required dependencies.
+First, install all the required dependencies.
 
 Python3 (for scraper)
 ```bash
@@ -42,23 +47,24 @@ sudo apt install g++-14
 Global Installation (Linux)
 
 The CLI depends on multiple files (`cf`, `run.sh`, `cf_parse.py`).  
-Install them together into a fixed directory and expose only the launcher.
-Make a folder in `/opt` and save the files from the repository in that folder
+Install them together into a fixed directory and expose only the launcher.  
+Navigate to the directory where you downloaded the project, then run:
 ```bash
-sudo mkdir -p /opt/CPJudge
-sudo cp cf cf_parse.py run.sh /opt/CPJudge/
-sudo ln -s /opt/CPJudge/cf /usr/local/bin/cf
+g++ -std=c++23 -O3 cph.cpp -o cph
+sudo mkdir -p /opt/CPH
+sudo cp ./*.* /opt/CPH
+sudo ln -s /opt/CPH/cph /usr/local/bin/cph
 ```
 Verify
 ```bash
-cf --help
+cph --help
 ```
 ## Usage
 
 ```bash
-cf fetch 4A
-cf run 4A
-cf test 4A
+cph cf fetch 4A
+cph cf run 4A
+cph cf test 4A
 ```
 - fetch: Downloads the sample input/ output files and creates a `.cpp` solution file with the same name as the problem ID.
 - run: Runs the custom input (stdin)
@@ -67,8 +73,11 @@ cf test 4A
 ## Example
 
 ```bash
-cf fetch 1803A
+cph cf fetch 1803A
 vim 1803A.cpp
-cf test 1803A
+cph cf test 1803A
 
 ```
+## Motivation
+- This project was built to automate competitive programming workflows:  
+fetching problems, compiling solutions, and validating against sample tests — all from the terminal.
