@@ -11,9 +11,12 @@ SOL="$1"
 INP="$2"
 ANS="$3"
 OUT="out.ans"
+BIN="sol"
 
-#echo "Compiling...."
-g++ -std=c++23 -O2 "$SOL" -o sol
+if [ ! -f $BIN ] || [ "$SOL" -nt $BIN ]; then
+    #echo "Compiling...."
+    g++ -std=c++23 -O2 "$SOL" -o $BIN
+fi
 
 #echo "Running...."
 ./sol <"$INP" > "$OUT"
@@ -31,6 +34,7 @@ NANS="$ANS.norm"
 
 normalize "$OUT" > "$NOUT"
 normalize "$ANS" > "$NANS"
+rm -f "$OUT"
 
 if diff -q "$NOUT" "$NANS" > /dev/null; then
     echo -e "\e[32m✔ Accepted\e[0m"
