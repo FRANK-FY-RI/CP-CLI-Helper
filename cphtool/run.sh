@@ -19,7 +19,14 @@ if [ ! -f $BIN ] || [ "$SOL" -nt $BIN ]; then
 fi
 
 #echo "Running...."
-./sol <"$INP" > "$OUT"
+set +e
+timeout 2s ./sol <"$INP" > "$OUT"
+status=$?
+set -e
+
+if [ $status -ne 0 ]; then
+    exit $status
+fi
 
 #echo "Judging...."
 
